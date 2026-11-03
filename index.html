@@ -1,36 +1,637 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-BR" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Escola Modelo Experimental</title>
+    <title>Escola Modelo Experimental | Ecossistema Educacional de Custo Zero</title>
+    
+    <!-- Meta tags SEO e Acadêmicas -->
+    <meta name="description" content="Portal público e Prova de Conceito (PoC) de Mestrado focada na criação de ecossistemas educacionais de custo zero integrando GitHub Pages e Google Workspace.">
+    <meta name="author" content="Escola Modelo Experimental">
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <!-- Fonte Inter Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Configuração de cores e fonte customizadas via Tailwind Config -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        navy: {
+                            50: '#f8fafc',
+                            100: '#f1f5f9',
+                            800: '#1e293b',
+                            900: '#0f172a',
+                            950: '#020617',
+                        },
+                        emerald: {
+                            500: '#10b981',
+                            600: '#059669',
+                            700: '#047857',
+                        },
+                        mint: {
+                            400: '#34d399',
+                            500: '#10b981',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f6f9;
-            color: #333;
-            margin: 0;
-            padding: 40px;
-            text-align: center;
+        /* Estilos adicionais para efeitos visuais refinados */
+        .glass-nav {
+            background: rgba(15, 23, 42, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
         }
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-            background: #ffffff;
-            padding: 30px;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        .hero-gradient {
+            background: radial-gradient(circle at 50% 20%, rgba(16, 185, 129, 0.12) 0%, rgba(15, 23, 42, 0) 70%);
         }
-        h1 {
-            color: #1a73e8;
+        .card-hover {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .card-hover:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 24px -10px rgba(16, 185, 129, 0.15);
+        }
+        
+        /* Animação suave para o Modal de Acesso */
+        .modal-backdrop {
+            transition: opacity 0.3s ease-in-out;
+        }
+        .modal-content {
+            transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease-in-out;
+        }
+        .modal-hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+        .modal-hidden .modal-content {
+            transform: scale(0.95) translateY(10px);
+        }
+        .modal-visible {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        .modal-visible .modal-content {
+            transform: scale(1) translateY(0);
         }
     </style>
 </head>
-<body>
-    <div class="container">
-        <h1>Escola Modelo Experimental</h1>
-        <p>Projeto de PoC para ecossistema educacional de custo zero integrando GitHub Pages e Google Workspace.</p>
-        <p><em>Portal em construção.</em></p>
+<body class="bg-navy-950 text-slate-100 font-sans antialiased selection:bg-emerald-500 selection:text-white min-h-screen flex flex-col justify-between">
+
+    <!-- HEADER / NAVEGAÇÃO -->
+    <header class="fixed top-0 left-0 right-0 z-40 glass-nav border-b border-slate-800/80 transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                
+                <!-- Logo / Marca -->
+                <a href="#" class="flex items-center gap-3 group">
+                    <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-emerald-600 to-mint-400 flex items-center justify-center text-white font-bold text-xl shadow-lg shadow-emerald-500/20 group-hover:scale-105 transition-transform">
+                        <i class="fa-solid fa-graduation-cap"></i>
+                    </div>
+                    <div>
+                        <span class="text-lg font-bold tracking-tight text-white block leading-tight">Escola Modelo</span>
+                        <span class="text-xs font-semibold uppercase tracking-wider text-emerald-400">Experimental</span>
+                    </div>
+                </a>
+
+                <!-- Nav Links Desktop -->
+                <nav class="hidden md:flex items-center gap-8 text-sm font-medium">
+                    <a href="#projeto" class="text-slate-300 hover:text-emerald-400 transition-colors">Sobre o Projeto</a>
+                    <a href="#pesquisador" class="text-slate-300 hover:text-emerald-400 transition-colors">O Pesquisador</a>
+                    <a href="#arquitetura" class="text-slate-300 hover:text-emerald-400 transition-colors">Arquitetura da PoC</a>
+                    <!-- Botão aciona Modal de Acesso -->
+                    <button type="button" class="btn-open-modal inline-flex items-center gap-2 bg-emerald-600 hover:bg-emerald-500 text-white font-semibold px-4 py-2 rounded-lg transition-all shadow-md shadow-emerald-600/20 hover:shadow-emerald-500/30">
+                        <i class="fa-solid fa-user-lock text-xs"></i>
+                        Acessar Plataforma
+                    </button>
+                </nav>
+
+                <!-- Botão Menu Mobile -->
+                <div class="md:hidden">
+                    <button id="mobile-menu-btn" type="button" class="p-2 rounded-lg text-slate-300 hover:text-white hover:bg-slate-800 focus:outline-none" aria-label="Abrir Menu">
+                        <i class="fa-solid fa-bars text-xl" id="menu-icon"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Menu Drawer Mobile -->
+        <div id="mobile-menu" class="hidden md:hidden border-b border-slate-800 bg-navy-900/95 backdrop-blur-lg px-4 pt-2 pb-6 space-y-3">
+            <a href="#projeto" class="mobile-link block px-3 py-2 rounded-md text-base font-medium text-slate-200 hover:bg-slate-800 hover:text-emerald-400">Sobre o Projeto</a>
+            <a href="#pesquisador" class="mobile-link block px-3 py-2 rounded-md text-base font-medium text-slate-200 hover:bg-slate-800 hover:text-emerald-400">O Pesquisador</a>
+            <a href="#arquitetura" class="mobile-link block px-3 py-2 rounded-md text-base font-medium text-slate-200 hover:bg-slate-800 hover:text-emerald-400">Arquitetura da PoC</a>
+            <button type="button" class="btn-open-modal mobile-link block w-full text-center bg-emerald-600 hover:bg-emerald-500 text-white font-semibold px-4 py-2.5 rounded-lg transition-all mt-4">
+                <i class="fa-solid fa-user-lock mr-2"></i>Acessar Plataforma
+            </button>
+        </div>
+    </header>
+
+    <!-- MAIN CONTENT -->
+    <main class="flex-grow pt-20">
+
+        <!-- HERO SECTION -->
+        <section class="relative hero-gradient pt-16 pb-24 lg:pt-24 lg:pb-32 overflow-hidden">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+                <div class="text-center max-w-3xl mx-auto space-y-8">
+                    
+                    <!-- Tag identificadora -->
+                    <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-semibold tracking-wide uppercase">
+                        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                        Pesquisa de Mestrado • Prova de Conceito (PoC)
+                    </div>
+
+                    <!-- Título principal -->
+                    <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-white tracking-tight leading-tight sm:leading-none">
+                        Inovação Educacional com <span class="bg-gradient-to-r from-emerald-400 via-mint-400 to-teal-200 bg-clip-text text-transparent">Tecnologias Livres</span>
+                    </h1>
+
+                    <!-- Subtítulo -->
+                    <p class="text-lg sm:text-xl text-slate-300 leading-relaxed font-normal">
+                        Ecossistema Educacional de Custo Zero integrando a resiliência do 
+                        <strong class="text-white font-semibold">GitHub Pages</strong> com a versatilidade do 
+                        <strong class="text-white font-semibold">Google Workspace & Classroom</strong>.
+                    </p>
+
+                    <!-- CTAs -->
+                    <div class="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
+                        <!-- Botão Principal aciona Modal -->
+                        <button type="button" class="btn-open-modal w-full sm:w-auto inline-flex items-center justify-center gap-3 bg-emerald-600 hover:bg-emerald-500 text-white font-semibold px-7 py-3.5 rounded-xl shadow-lg shadow-emerald-600/25 transition-all transform hover:-translate-y-0.5">
+                            <i class="fa-solid fa-chalkboard-user"></i>
+                            Entrar na Sala de Aula
+                        </button>
+                        <a href="#projeto" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-slate-800/80 hover:bg-slate-700/80 text-slate-200 border border-slate-700 font-semibold px-7 py-3.5 rounded-xl transition-all">
+                            <i class="fa-solid fa-book-open text-slate-400"></i>
+                            Conhecer a Pesquisa
+                        </a>
+                    </div>
+
+                    <!-- Métricas / Destaques rápidos -->
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 pt-12 border-t border-slate-800/80 mt-12 text-left">
+                        <div class="p-4 rounded-xl bg-slate-900/50 border border-slate-800">
+                            <div class="text-2xl font-bold text-emerald-400">R$ 0,00</div>
+                            <div class="text-xs text-slate-400 mt-1">Custo de Infraestrutura Web</div>
+                        </div>
+                        <div class="p-4 rounded-xl bg-slate-900/50 border border-slate-800">
+                            <div class="text-2xl font-bold text-white">100%</div>
+                            <div class="text-xs text-slate-400 mt-1">Nativo na Nuvem e HTTPS</div>
+                        </div>
+                        <div class="p-4 rounded-xl bg-slate-900/50 border border-slate-800">
+                            <div class="text-2xl font-bold text-emerald-400">100 GB</div>
+                            <div class="text-xs text-slate-400 mt-1">Armazenamento Integrado</div>
+                        </div>
+                        <div class="p-4 rounded-xl bg-slate-900/50 border border-slate-800">
+                            <div class="text-2xl font-bold text-white">Domínio</div>
+                            <div class="text-xs text-slate-400 mt-1">Próprio (.com.br) Registrado</div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- SEÇÃO: SOBRE O PROJETO DE INVESTIGAÇÃO -->
+        <section id="projeto" class="py-20 bg-navy-900/60 border-y border-slate-800/80">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                
+                <div class="max-w-3xl mb-16">
+                    <h2 class="text-xs font-bold uppercase tracking-widest text-emerald-400 mb-2">Fundamentação Acadêmica</h2>
+                    <h3 class="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">O Projeto de Pesquisa</h3>
+                    <p class="mt-4 text-slate-300 text-lg leading-relaxed">
+                        Esta Prova de Conceito (PoC) investiga estratégias para democratizar a gestão da aprendizagem e a presença digital de instituições educacionais. Através de uma arquitetura híbrida e otimizada, eliminam-se custos com servidores e manutenção de software, mantendo elevado padrão de segurança, acessibilidade e desempenho.
+                    </p>
+                </div>
+
+                <!-- Grid dos 4 Pilares da PoC -->
+                <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    
+                    <!-- Pilar 1 -->
+                    <div class="p-6 rounded-2xl bg-slate-900/90 border border-slate-800 card-hover flex flex-col justify-between">
+                        <div>
+                            <div class="w-12 h-12 rounded-xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center text-xl font-bold mb-5 border border-emerald-500/20">
+                                <i class="fa-solid fa-piggy-bank"></i>
+                            </div>
+                            <h4 class="text-xl font-bold text-white mb-2">Custo Zero Real</h4>
+                            <p class="text-sm text-slate-400 leading-relaxed">
+                                Eliminação de mensalidades e custos com servidores através de planos gratuitos institucionais e hospedagem estática otimizada.
+                            </p>
+                        </div>
+                        <div class="mt-6 pt-4 border-t border-slate-800/80 text-xs font-semibold text-emerald-400 flex items-center gap-1">
+                            Sustentabilidade Financeira <i class="fa-solid fa-arrow-right text-[10px]"></i>
+                        </div>
+                    </div>
+
+                    <!-- Pilar 2 -->
+                    <div class="p-6 rounded-2xl bg-slate-900/90 border border-slate-800 card-hover flex flex-col justify-between">
+                        <div>
+                            <div class="w-12 h-12 rounded-xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center text-xl font-bold mb-5 border border-emerald-500/20">
+                                <i class="fa-solid fa-puzzle-piece"></i>
+                            </div>
+                            <h4 class="text-xl font-bold text-white mb-2">Integração Fluida</h4>
+                            <p class="text-sm text-slate-400 leading-relaxed">
+                                Sincronização entre o portal institucional de acesso aberto e as turmas privadas do ambiente virtual de aprendizagem (LMS).
+                            </p>
+                        </div>
+                        <div class="mt-6 pt-4 border-t border-slate-800/80 text-xs font-semibold text-emerald-400 flex items-center gap-1">
+                            Usabilidade e UX <i class="fa-solid fa-arrow-right text-[10px]"></i>
+                        </div>
+                    </div>
+
+                    <!-- Pilar 3 -->
+                    <div class="p-6 rounded-2xl bg-slate-900/90 border border-slate-800 card-hover flex flex-col justify-between">
+                        <div>
+                            <div class="w-12 h-12 rounded-xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center text-xl font-bold mb-5 border border-emerald-500/20">
+                                <i class="fa-solid fa-chart-line"></i>
+                            </div>
+                            <h4 class="text-xl font-bold text-white mb-2">Escalabilidade</h4>
+                            <p class="text-sm text-slate-400 leading-relaxed">
+                                Estrutura capaz de atender de dezenas a milhares de alunos simultaneamente sem degradação do tempo de resposta do portal.
+                            </p>
+                        </div>
+                        <div class="mt-6 pt-4 border-t border-slate-800/80 text-xs font-semibold text-emerald-400 flex items-center gap-1">
+                            Alta Disponibilidade <i class="fa-solid fa-arrow-right text-[10px]"></i>
+                        </div>
+                    </div>
+
+                    <!-- Pilar 4 -->
+                    <div class="p-6 rounded-2xl bg-slate-900/90 border border-slate-800 card-hover flex flex-col justify-between">
+                        <div>
+                            <div class="w-12 h-12 rounded-xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center text-xl font-bold mb-5 border border-emerald-500/20">
+                                <i class="fa-solid fa-shield-halved"></i>
+                            </div>
+                            <h4 class="text-xl font-bold text-white mb-2">Segurança & SSL</h4>
+                            <p class="text-sm text-slate-400 leading-relaxed">
+                                Criptografia de ponta a ponta com certificados TLS/HTTPS automáticos, garantindo a proteção e integridade dos acessos.
+                            </p>
+                        </div>
+                        <div class="mt-6 pt-4 border-t border-slate-800/80 text-xs font-semibold text-emerald-400 flex items-center gap-1">
+                            Padrões Web Globais <i class="fa-solid fa-arrow-right text-[10px]"></i>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- SEÇÃO: SOBRE O PESQUISADOR -->
+        <section id="pesquisador" class="py-20 relative">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                
+                <div class="bg-gradient-to-br from-slate-900 to-navy-900 rounded-3xl border border-slate-800 p-8 sm:p-12 overflow-hidden shadow-2xl relative">
+                    <!-- Detalhe decorativo no fundo -->
+                    <div class="absolute -right-12 -bottom-12 w-64 h-64 bg-emerald-500/5 rounded-full blur-3xl pointer-events-none"></div>
+                    
+                    <div class="grid lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+                        
+                        <!-- Coluna Foto / Avatar -->
+                        <div class="lg:col-span-4 flex flex-col items-center text-center">
+                            <div class="relative group">
+                                <div class="absolute -inset-1 bg-gradient-to-r from-emerald-500 to-mint-400 rounded-full blur opacity-30 group-hover:opacity-60 transition duration-300"></div>
+                                <!-- Avatar Placeholder elegante -->
+                                <div class="relative w-40 h-40 sm:w-48 sm:h-48 rounded-full bg-slate-800 border-2 border-emerald-500/40 flex items-center justify-center text-slate-400 text-5xl shadow-xl overflow-hidden">
+                                    <i class="fa-solid fa-user-graduate text-emerald-400"></i>
+                                </div>
+                            </div>
+                            <h3 class="text-2xl font-bold text-white mt-6">Pesquisador Responsável</h3>
+                            <p class="text-emerald-400 font-medium text-sm">Mestrando em Educação / Tecnologia</p>
+                            
+                            <!-- Badges Redes / Contato -->
+                            <div class="flex items-center gap-3 mt-4">
+                                <a href="mailto:escolamodeloexperimental@gmail.com" class="w-9 h-9 rounded-lg bg-slate-800 hover:bg-emerald-600 text-slate-300 hover:text-white flex items-center justify-center transition-colors" title="Enviar E-mail">
+                                    <i class="fa-solid fa-envelope"></i>
+                                </a>
+                                <a href="https://github.com/escolamodeloexperimental-dev" target="_blank" class="w-9 h-9 rounded-lg bg-slate-800 hover:bg-emerald-600 text-slate-300 hover:text-white flex items-center justify-center transition-colors" title="GitHub do Projeto">
+                                    <i class="fa-brands fa-github"></i>
+                                </a>
+                            </div>
+                        </div>
+
+                        <!-- Coluna Biografia e Motivação -->
+                        <div class="lg:col-span-8 space-y-6">
+                            <div>
+                                <h2 class="text-xs font-bold uppercase tracking-widest text-emerald-400 mb-1">Apresentação Acadêmica</h2>
+                                <h3 class="text-3xl font-extrabold text-white">A Motivação por Trás da Pesquisa</h3>
+                            </div>
+
+                            <p class="text-slate-300 leading-relaxed text-base">
+                                Bem-vindo ao portal da <strong class="text-white">Escola Modelo Experimental</strong>. Esta iniciativa nasce do desejo de responder a um desafio urgente nas instituições de ensino públicas e comunitárias: como estruturar uma presença digital moderna, robusta e eficiente sem comprometer orçamentos financeiros limitados.
+                            </p>
+
+                            <p class="text-slate-300 leading-relaxed text-base">
+                                Como pesquisador deste programa de Mestrado, desenvolvi esta infraestrutura como prova empírica de que a combinação pragmática de tecnologias estáticas gratuitas (GitHub Pages) e ferramentas de produtividade em nuvem (Google Workspace/Classroom) pode gerar ecossistemas educacionais completos e sustentáveis no longo prazo.
+                            </p>
+
+                            <div class="p-4 rounded-xl bg-slate-800/60 border border-slate-700/60 flex items-start gap-4">
+                                <i class="fa-solid fa-quote-left text-emerald-400 text-2xl mt-1"></i>
+                                <blockquote class="text-sm text-slate-300 italic">
+                                    "A tecnologia educacional só alcança seu verdadeiro propósito transformador quando é acessível, inclusiva e financeiramente viável para todas as realidades escolares."
+                                </blockquote>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- SEÇÃO: ARQUITETURA TÉCNICA DA POC -->
+        <section id="arquitetura" class="py-20 bg-navy-900/60 border-t border-slate-800/80">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                
+                <div class="text-center max-w-3xl mx-auto mb-16">
+                    <h2 class="text-xs font-bold uppercase tracking-widest text-emerald-400 mb-2">Estrutura e Componentes</h2>
+                    <h3 class="text-3xl sm:text-4xl font-extrabold text-white">Stack da Infraestrutura Custo Zero</h3>
+                    <p class="mt-4 text-slate-300 text-base">
+                        Conheça as camadas tecnológicas que compõem o ecossistema da Escola Modelo Experimental.
+                    </p>
+                </div>
+
+                <!-- Diagrama / Fluxo da Arquitetura -->
+                <div class="grid md:grid-cols-3 lg:grid-cols-5 gap-4 relative">
+                    
+                    <!-- Passo 1 -->
+                    <div class="p-5 rounded-xl bg-slate-900 border border-slate-800 text-center space-y-3">
+                        <div class="w-10 h-10 rounded-lg bg-blue-500/10 text-blue-400 flex items-center justify-center font-bold mx-auto text-lg border border-blue-500/20">
+                            <i class="fa-solid fa-globe"></i>
+                        </div>
+                        <h4 class="font-bold text-white text-base">1. Registro.br</h4>
+                        <p class="text-xs text-slate-400">DNS e Domínio Próprio Institucional (.com.br)</p>
+                    </div>
+
+                    <!-- Passo 2 -->
+                    <div class="p-5 rounded-xl bg-slate-900 border border-slate-800 text-center space-y-3">
+                        <div class="w-10 h-10 rounded-lg bg-purple-500/10 text-purple-400 flex items-center justify-center font-bold mx-auto text-lg border border-purple-500/20">
+                            <i class="fa-brands fa-github"></i>
+                        </div>
+                        <h4 class="font-bold text-white text-base">2. GitHub Pages</h4>
+                        <p class="text-xs text-slate-400">Hospedagem Estática de Alta Velocidade e CI/CD</p>
+                    </div>
+
+                    <!-- Passo 3 -->
+                    <div class="p-5 rounded-xl bg-slate-900 border border-slate-800 text-center space-y-3">
+                        <div class="w-10 h-10 rounded-lg bg-emerald-500/10 text-emerald-400 flex items-center justify-center font-bold mx-auto text-lg border border-emerald-500/20">
+                            <i class="fa-solid fa-lock"></i>
+                        </div>
+                        <h4 class="font-bold text-white text-base">3. HTTPS / SSL</h4>
+                        <p class="text-xs text-slate-400">Criptografia nativa e navegação segura</p>
+                    </div>
+
+                    <!-- Passo 4 -->
+                    <div class="p-5 rounded-xl bg-slate-900 border border-slate-800 text-center space-y-3">
+                        <div class="w-10 h-10 rounded-lg bg-amber-500/10 text-amber-400 flex items-center justify-center font-bold mx-auto text-lg border border-amber-500/20">
+                            <i class="fa-solid fa-users-rectangle"></i>
+                        </div>
+                        <h4 class="font-bold text-white text-base">4. Google Classroom</h4>
+                        <p class="text-xs text-slate-400">Ambiente Virtual de Aprendizagem (LMS)</p>
+                    </div>
+
+                    <!-- Passo 5 -->
+                    <div class="p-5 rounded-xl bg-slate-900 border border-slate-800 text-center space-y-3">
+                        <div class="w-10 h-10 rounded-lg bg-teal-500/10 text-teal-400 flex items-center justify-center font-bold mx-auto text-lg border border-teal-500/20">
+                            <i class="fa-solid fa-cloud"></i>
+                        </div>
+                        <h4 class="font-bold text-white text-base">5. Google One Storage</h4>
+                        <p class="text-xs text-slate-400">Armazenamento expandido via Compartilhamento</p>
+                    </div>
+
+                </div>
+
+            </div>
+        </section>
+
+        <!-- SEÇÃO: ACESSO AO LMS (GOOGLE CLASSROOM) -->
+        <section id="lms" class="py-20 relative">
+            <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+                
+                <div class="bg-gradient-to-r from-emerald-900/40 via-slate-900 to-navy-900 border border-emerald-500/30 rounded-3xl p-8 sm:p-12 text-center space-y-6 shadow-2xl relative overflow-hidden">
+                    <div class="w-16 h-16 bg-emerald-500/20 text-emerald-400 rounded-2xl flex items-center justify-center text-3xl mx-auto border border-emerald-500/30">
+                        <i class="fa-solid fa-door-open"></i>
+                    </div>
+
+                    <h2 class="text-3xl sm:text-4xl font-extrabold text-white">Acesse o Ambiente Virtual de Aprendizagem</h2>
+                    <p class="text-slate-300 max-w-2xl mx-auto text-base">
+                        As turmas e disciplinas da Escola Modelo Experimental são geridas através do Google Classroom. Clique no botão abaixo para orientações e acesso direto.
+                    </p>
+
+                    <div class="pt-4 flex flex-col sm:flex-row items-center justify-center gap-4">
+                        <button type="button" class="btn-open-modal w-full sm:w-auto inline-flex items-center justify-center gap-3 bg-emerald-600 hover:bg-emerald-500 text-white font-bold px-8 py-4 rounded-xl shadow-xl shadow-emerald-600/30 transition-all transform hover:-translate-y-0.5">
+                            <i class="fa-solid fa-key"></i>
+                            Acessar Minha Turma (Google Classroom)
+                        </button>
+                    </div>
+
+                    <div class="text-xs text-slate-400 pt-2">
+                        <i class="fa-solid fa-circle-info text-emerald-400 mr-1"></i>
+                        Ambiente seguro integrado à autenticação oficial do Google.
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+    </main>
+
+    <!-- RODAPÉ (FOOTER) -->
+    <footer class="bg-navy-950 border-t border-slate-800/80 pt-12 pb-8 text-slate-400 text-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
+            
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-8">
+                
+                <!-- Coluna Institucional -->
+                <div class="md:col-span-6 space-y-4">
+                    <div class="flex items-center gap-3">
+                        <div class="w-8 h-8 rounded-lg bg-emerald-600 flex items-center justify-center text-white font-bold text-sm">
+                            <i class="fa-solid fa-graduation-cap"></i>
+                        </div>
+                        <span class="text-base font-bold text-white">Escola Modelo Experimental</span>
+                    </div>
+                    <p class="text-slate-400 text-xs leading-relaxed max-w-md">
+                        Projeto de pesquisa e Prova de Conceito (PoC) para dissertação de Mestrado. Focado na viabilidade técnica e financeira de ecossistemas educacionais livres.
+                    </p>
+                </div>
+
+                <!-- Coluna Links Rápidos -->
+                <div class="md:col-span-3 space-y-3">
+                    <h5 class="text-xs font-bold uppercase tracking-wider text-white">Navegação</h5>
+                    <ul class="space-y-2 text-xs">
+                        <li><a href="#projeto" class="hover:text-emerald-400 transition-colors">Sobre o Projeto</a></li>
+                        <li><a href="#pesquisador" class="hover:text-emerald-400 transition-colors">O Pesquisador</a></li>
+                        <li><a href="#arquitetura" class="hover:text-emerald-400 transition-colors">Arquitetura da PoC</a></li>
+                        <li><button type="button" class="btn-open-modal hover:text-emerald-400 transition-colors text-left">Google Classroom</button></li>
+                    </ul>
+                </div>
+
+                <!-- Coluna Contato Acadêmico -->
+                <div class="md:col-span-3 space-y-3">
+                    <h5 class="text-xs font-bold uppercase tracking-wider text-white">Contato Institucional</h5>
+                    <p class="text-xs text-slate-400">
+                        E-mail:<br>
+                        <a href="mailto:escolamodeloexperimental@gmail.com" class="text-emerald-400 hover:underline">escolamodeloexperimental@gmail.com</a>
+                    </p>
+                    <p class="text-xs text-slate-400">
+                        Domínio Oficial:<br>
+                        <span class="text-slate-200">escolamodeloexperimental.com.br</span>
+                    </p>
+                </div>
+
+            </div>
+
+            <!-- Divisor e Copyright -->
+            <div class="pt-8 border-t border-slate-800/80 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-500 gap-4">
+                <p>&copy; 2026 Escola Modelo Experimental. Todos os direitos reservados. Projeto Acadêmico de Mestrado.</p>
+                <div class="flex items-center gap-4">
+                    <a href="#top" class="hover:text-emerald-400 transition-colors flex items-center gap-1">
+                        Voltar ao topo <i class="fa-solid fa-arrow-up text-[10px]"></i>
+                    </a>
+                </div>
+            </div>
+
+        </div>
+    </footer>
+
+    <!-- MODAL INTERATIVO DE ACESSO AO CLASSROOM -->
+    <div id="access-modal" class="modal-backdrop fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md modal-hidden" aria-hidden="true">
+        <div class="modal-content relative w-full max-w-lg bg-slate-900 border border-slate-800 rounded-3xl p-6 sm:p-8 shadow-2xl space-y-6">
+            
+            <!-- Botão Fechar (X) -->
+            <button id="modal-close-btn" type="button" class="absolute top-5 right-5 w-9 h-9 rounded-full bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white flex items-center justify-center transition-colors focus:outline-none">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+
+            <!-- Cabeçalho do Modal -->
+            <div class="flex items-center gap-4">
+                <div class="w-12 h-12 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 flex items-center justify-center text-2xl flex-shrink-0">
+                    <i class="fa-solid fa-shield-halved"></i>
+                </div>
+                <div>
+                    <h3 class="text-xl font-bold text-white">Acesso à Sala de Aula</h3>
+                    <p class="text-xs text-emerald-400 font-medium">Autenticação Integrada Google Workspace</p>
+                </div>
+            </div>
+
+            <!-- Corpo de Orientações -->
+            <div class="space-y-4 text-sm text-slate-300 border-y border-slate-800/80 py-4">
+                <p class="leading-relaxed">
+                    O ambiente de aprendizagem da <strong class="text-white">Escola Modelo Experimental</strong> é gerido de forma segura via <strong class="text-white">Google Classroom</strong>.
+                </p>
+                
+                <div class="bg-slate-800/50 p-4 rounded-xl border border-slate-700/50 space-y-2">
+                    <div class="flex items-start gap-2.5 text-xs text-slate-200">
+                        <i class="fa-solid fa-circle-check text-emerald-400 mt-0.5"></i>
+                        <span>Certifique-se de estar conectado com sua conta de e-mail <strong>@gmail.com</strong> no seu navegador.</span>
+                    </div>
+                    <div class="flex items-start gap-2.5 text-xs text-slate-200">
+                        <i class="fa-solid fa-circle-check text-emerald-400 mt-0.5"></i>
+                        <span>Caso seja seu primeiro acesso, insira o código da turma fornecido pelo professor responsável.</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Botões do Modal -->
+            <div class="flex flex-col sm:flex-row items-center gap-3 pt-1">
+                <a href="https://classroom.google.com" target="_blank" rel="noopener noreferrer" class="w-full sm:flex-1 inline-flex items-center justify-center gap-2 bg-emerald-600 hover:bg-emerald-500 text-white font-semibold py-3.5 px-5 rounded-xl shadow-lg shadow-emerald-600/20 transition-all text-sm">
+                    <i class="fa-solid fa-right-to-bracket"></i>
+                    Continuar para o Google Classroom
+                </a>
+                <button id="modal-cancel-btn" type="button" class="w-full sm:w-auto bg-slate-800 hover:bg-slate-700 text-slate-300 font-medium py-3.5 px-5 rounded-xl transition-colors text-sm">
+                    Cancelar
+                </button>
+            </div>
+
+            <!-- Nota de rodapé do modal -->
+            <p class="text-[11px] text-center text-slate-500">
+                <i class="fa-solid fa-lock mr-1"></i> Abertura em nova aba com protocolo HTTPS ativado.
+            </p>
+
+        </div>
     </div>
+
+    <!-- SCRIPTS JS INTERATIVOS -->
+    <script>
+        // --- 1. LÓGICA DO MENU MOBILE ---
+        const menuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const menuIcon = document.getElementById('menu-icon');
+        const mobileLinks = document.querySelectorAll('.mobile-link');
+
+        menuBtn.addEventListener('click', () => {
+            const isHidden = mobileMenu.classList.contains('hidden');
+            if (isHidden) {
+                mobileMenu.classList.remove('hidden');
+                menuIcon.classList.remove('fa-bars');
+                menuIcon.classList.add('fa-xmark');
+            } else {
+                mobileMenu.classList.add('hidden');
+                menuIcon.classList.remove('fa-xmark');
+                menuIcon.classList.add('fa-bars');
+            }
+        });
+
+        mobileLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+                menuIcon.classList.remove('fa-xmark');
+                menuIcon.classList.add('fa-bars');
+            });
+        });
+
+        // --- 2. LÓGICA DO MODAL INTERATIVO DE ACESSO ---
+        const modal = document.getElementById('access-modal');
+        const openModalBtns = document.querySelectorAll('.btn-open-modal');
+        const closeModalBtn = document.getElementById('modal-close-btn');
+        const cancelModalBtn = document.getElementById('modal-cancel-btn');
+
+        function openModal() {
+            modal.classList.remove('modal-hidden');
+            modal.classList.add('modal-visible');
+            modal.setAttribute('aria-hidden', 'false');
+            document.body.classList.add('overflow-hidden'); // Trava rolagem do fundo
+        }
+
+        function closeModal() {
+            modal.classList.remove('modal-visible');
+            modal.classList.add('modal-hidden');
+            modal.setAttribute('aria-hidden', 'true');
+            document.body.classList.remove('overflow-hidden'); // Libera rolagem
+        }
+
+        // Eventos nos botões
+        openModalBtns.forEach(btn => {
+            btn.addEventListener('click', openModal);
+        });
+
+        closeModalBtn.addEventListener('click', closeModal);
+        cancelModalBtn.addEventListener('click', closeModal);
+
+        // Fechar ao clicar no fundo escuro (backdrop)
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                closeModal();
+            }
+        });
+
+        // Fechar com a tecla ESC
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && modal.classList.contains('modal-visible')) {
+                closeModal();
+            }
+        });
+    </script>
 </body>
 </html>
